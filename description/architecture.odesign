@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:filter="http://www.eclipse.org/sirius/diagram/description/filter/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:validation="http://www.eclipse.org/sirius/description/validation/1.1.0" name="architecture" version="12.0.0.2017041100">
+  <ownedViewpoints name="architecture_viewpoint" label="Architecture Viewpoint" modelFileExtension="architecture">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="architecture_diagram_id" label="Architecture Diagram" initialisation="true" showOnStartup="true" domainClass="architecture::Architecture" enablePopupBars="true">
+      <metamodel href="../../de.e4sm.tuilmenau.sse.architecture.model/model/architecture.ecore#/"/>
+      <filters xsi:type="filter:CompositeFilterDescription" name="properties_filter_id" label="Hide Properties">
+        <filters xsi:type="filter:MappingFilter" mappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@containerMappings[name='add_on_container_id']/@subNodeMappings[name='property_in_container']" semanticConditionExpression="aql:false"/>
+      </filters>
+      <validationSet>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="validation_metamodel_uri_not_set" label="URI not set" level="ERROR" message="The metamodel URI parameter must be set." targetClass="architecture::Metamodel">
+          <audits auditExpression="aql:self.uri.lastIndex('/')>0"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="validation_element_not_referenced" label="Element not referenced by Diagram" level="ERROR" message="The element is not referenced by any diagram" targetClass="architecture::ModelElement">
+          <audits auditExpression="aql:self.eInverse()->filter(architecture::Diagram)->size()>0"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="connector_no_allowed_source_or_target_validation" label="No Source nor Target on Connector" level="WARNING" message="The element should have at least one incoming or outgoing Connector" targetClass="architecture::Item">
+          <audits auditExpression="aql:self.outgoing->size()>0"/>
+          <audits auditExpression="aql:self.incoming->size()>0"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="name_not_needed_validation_id" label="Name Property not needed" level="WARNING" message="You don't need to manually add a &quot;name&quot; property: it will be added automatically to all elements." targetClass="architecture::Property">
+          <audits auditExpression="aql:not self.name.equalsIgnoreCase('name')"/>
+          <fixes name="Delete unnecessary &quot;name&quot; Property">
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:Let" variableName="property" valueExpression="var:self">
+                <subModelOperations xsi:type="tool:ChangeContext" browseExpression="aql:self.eContainer()">
+                  <subModelOperations xsi:type="tool:Unset" featureName="properties" elementExpression="var:property"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </fixes>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="validation_no_diagram" label="Element not in a Diagram" level="WARNING" message="The element is not part of any diagram" targetClass="architecture::Item">
+          <audits auditExpression="aql:self.siblings()->filter(architecture::Diagram)->select(d|d.elements->includes(self))->size()>0"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="connection_without_allowed_targets_id" label="No allowed Targets" level="ERROR" message="This connection does not have any allowed Target set." targetClass="architecture::Connection">
+          <audits auditExpression="aql:not self.allowedTargets->isEmpty()"/>
+        </ownedRules>
+      </validationSet>
+      <defaultLayer name="Default">
+        <edgeMappings name="edge_isA_edges_id" label="Edge Generalization" deletionDescription="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.1/@ownedTools[name='delete_isA_edges_id']" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='edge_container_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='edge_container_id']" targetFinderExpression="feature:isA">
+          <style targetArrow="InputClosedArrow" sizeComputationExpression="2" routingStyle="manhattan" foldingStyle="TARGET" endsCentering="Target">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription labelSize="12" showIcon="false">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="edge_isA_nodes_id" label="Node Generalization" deletionDescription="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.1/@ownedTools[name='delete_isA_edges_id']" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']" targetFinderExpression="feature:isA">
+          <style targetArrow="InputClosedArrow" sizeComputationExpression="2" routingStyle="manhattan" endsCentering="Target">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription labelSize="12">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="edge_isA_containers_id" label="Container Generalization" deletionDescription="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.1/@ownedTools[name='delete_isA_edges_id']" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']" targetFinderExpression="feature:isA">
+          <style targetArrow="InputClosedArrow" sizeComputationExpression="2" routingStyle="manhattan" endsCentering="Target">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription labelSize="12">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="node_container_id" label="Node" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.0/@ownedTools[name='direct_edit_label']" semanticCandidatesExpression="aql:self.modelelements->filter(architecture::Node)" domainClass="architecture::Node" childrenPresentation="List">
+          <borderedNodeMappings name="bordered_outgoing_connection_id" label="Outgoing Connection" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='connector_layer']/@toolSections.0/@ownedTools[name='direct_edit_label_connection_out_id']" semanticCandidatesExpression="feature:outgoing" domainClass="architecture::Connection">
+            <style xsi:type="style:SquareDescription" labelSize="9" showIcon="false" labelExpression="aql:'out\n[' +self.min+'..' + (if (self.max = -1) then '*' else self.max endif)+ ']' " tooltipExpression="aql:'Outgoing: ' + self.name" sizeComputationExpression="4" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
+            </style>
+          </borderedNodeMappings>
+          <borderedNodeMappings name="bordered_incoming_connection_id" label="Incoming Connection" semanticCandidatesExpression="feature:incoming" domainClass="architecture::Connection">
+            <style xsi:type="style:SquareDescription" labelSize="9" showIcon="false" labelExpression="aql:'in\n[' +self.min+'..' + (if (self.max = -1) then '*' else self.max endif)+ ']' " tooltipExpression="aql:'Incoming: ' + self.name" sizeComputationExpression="4" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+            </style>
+          </borderedNodeMappings>
+          <subNodeMappings name="property_in_container" label="Property" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.0/@ownedTools[name='edit_property_name']" semanticCandidatesExpression="feature:properties" domainClass="architecture::Property">
+            <style xsi:type="style:NoteDescription" labelSize="10" showIcon="false" labelExpression="aql:self.name+' : '+self.type" labelAlignment="LEFT" tooltipExpression="property_name : type" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='yellow']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelSize="10" showIcon="false" labelExpression="aql:self. name + ' : Node'" tooltipExpression="Node" widthComputationExpression="18" heightComputationExpression="15">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="rangeConnection_container_id" label="RangeConnection" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.0/@ownedTools[name='direct_edit_label']" semanticCandidatesExpression="aql:self.modelelements->filter(architecture::RangeConnection)" domainClass="architecture::RangeConnection" reusedNodeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container']" childrenPresentation="List">
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelSize="10" showIcon="false" labelExpression="aql:self.name + ' : RangeConnection'">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='chocolate']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='chocolate']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="edge_container_id" label="Edge" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.0/@ownedTools[name='direct_edit_label']" semanticCandidatesExpression="aql:self.modelelements->filter(architecture::Edge)" domainClass="architecture::Edge" reusedNodeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container']" childrenPresentation="List">
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelSize="10" labelExpression="aql:self.name + ' : Edge'" iconPath="/org.eclipse.sirius.ui/icons/full/others/backward.gif" tooltipExpression="edge">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
+          </style>
+        </containerMappings>
+        <toolSections name="creation_section" label="Create">
+          <ownedTools xsi:type="tool_1:NodeCreationDescription" documentation="Create a new Node" name="property_creation_id" label="Property" nodeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:CreateInstance" typeName="architecture::Property" referenceName="properties">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="aql:'Property '+container.properties->size()"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:DirectEditLabel" name="direct_edit_label" label="Edit Label">
+            <mask mask="{0} : {1}"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="var:0"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:DirectEditLabel" name="edit_property_name" label="Edit Property Name">
+            <mask mask="{0} : {1} = {2}"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="var:0"/>
+                <subModelOperations xsi:type="tool:SetValue" featureName="type" valueExpression="var:1"/>
+                <subModelOperations xsi:type="tool:If" conditionExpression="aql:arg2=''">
+                  <subModelOperations xsi:type="tool:Unset" featureName="defaultValue"/>
+                </subModelOperations>
+                <subModelOperations xsi:type="tool:If" conditionExpression="aql:arg2&lt;>''">
+                  <subModelOperations xsi:type="tool:SetValue" featureName="defaultValue" valueExpression="var:2"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:ContainerCreationDescription" name="node_container_creation_id" label="Node" containerMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:CreateInstance" typeName="architecture::Node" referenceName="modelelements">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="aql:'Node '+container.modelelements->filter(architecture::Node)->size()"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:ContainerCreationDescription" name="create_range_connection_id" label="Range Connection" containerMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='rangeConnection_container_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:CreateInstance" typeName="architecture::RangeConnection" referenceName="modelelements">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="aql:'Node '+container.modelelements->filter(architecture::RangeConnection)->size()"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:ContainerCreationDescription" name="edge_container_creation_id" label="Edge" containerMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='edge_container_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:CreateInstance" typeName="architecture::Edge" referenceName="modelelements">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="aql:'Edge '+container.modelelements->filter(architecture::Edge)->size()"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:DirectEditLabel" name="direct_edit_label_name" label="Edit Name">
+            <mask mask="{0}"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="var:0"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:EdgeCreationDescription" name="create_generalization_id" label="Create Generalisation" precondition="aql:preSource &lt;> preTarget and preTarget.isA &lt;> preSource and preSource.eClass() = preTarget.eClass()" edgeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@edgeMappings[name='edge_isA_nodes_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@edgeMappings[name='edge_isA_edges_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@edgeMappings[name='edge_isA_containers_id']" connectionStartPrecondition="aql:preSource.isA->isEmpty()">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="isA" valueExpression="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:NodeCreationDescription" name="bordered_incoming_creation_id" label="Create Incoming Connection" nodeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_incoming_connection_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:CreateInstance" typeName="architecture::Connection" referenceName="incoming">
+                  <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="aql:'outgoing_'+container.incoming->size()"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:NodeCreationDescription" name="bordered_outgoing_creation_id" label="Create Outgoing Connection" nodeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_outgoing_connection_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:CreateInstance" typeName="architecture::Connection" referenceName="outgoing">
+                  <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="aql:'outgoing_'+container.outgoing->size()"/>
+                </subModelOperations>
+                <subModelOperations xsi:type="tool:SetValue" featureName="outgoing" valueExpression="aql:self.outgoing->including(instance)"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="section_hidden_id" label="Hidden Tools">
+          <ownedTools xsi:type="tool_1:DeleteElementDescription" name="delete_isA_edges_id" label="Delete Edge Generalisation" forceRefresh="true">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool:Unset" featureName="isA" elementExpression="aql:elementView.targetNode.oclAsType(viewpoint::DSemanticDecorator).target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <customization>
+          <vsmElementCustomizations xsi:type="description:VSMElementCustomization" predicateExpression="aql:self.oclAsType(architecture::Property).defaultValue.size()>0">
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container']/@style" attributeName="labelExpression" value="aql:self.oclAsType(architecture::Property).name+' : '+self.oclAsType(architecture::Property).type + ' = ' + self.oclAsType(architecture::Property).defaultValue"/>
+          </vsmElementCustomizations>
+          <vsmElementCustomizations xsi:type="description:VSMElementCustomization" predicateExpression="aql:self.oclAsType(architecture::Property).required">
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container']/@style" attributeName="labelFormat" value="bold"/>
+          </vsmElementCustomizations>
+          <vsmElementCustomizations xsi:type="description:VSMElementCustomization" predicateExpression="aql:self.oclAsType(architecture::ModelElement).isAbstract">
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='edge_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@containerMappings[name='add_on_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='rangeConnection_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@containerMappings[name='port_container_id']/@style" attributeName="labelFormat" value="italic"/>
+            <featureCustomizations xsi:type="description:EReferenceCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@containerMappings[name='port_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='edge_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='rangeConnection_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@containerMappings[name='add_on_container_id']/@style" referenceName="backgroundColor">
+              <value href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+            </featureCustomizations>
+            <featureCustomizations xsi:type="description:EReferenceCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@containerMappings[name='port_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='edge_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='rangeConnection_container_id']/@style //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@containerMappings[name='add_on_container_id']/@style" referenceName="foregroundColor">
+              <value href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+            </featureCustomizations>
+          </vsmElementCustomizations>
+        </customization>
+      </defaultLayer>
+      <additionalLayers name="diagram_layer_id" label="Diagrams" activeByDefault="true">
+        <nodeMappings name="diagram_node_id" label="Diagram" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.0/@ownedTools[name='direct_edit_label_name']" semanticCandidatesExpression="feature:diagrams" domainClass="architecture::Diagram">
+          <style xsi:type="style:LozengeNodeDescription" labelSize="12" showIcon="false" tooltipExpression="Diagram" sizeComputationExpression="" labelPosition="node" resizeKind="NSEW" widthComputationExpression="aql:self.name->size()*7" heightComputationExpression="5">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_yellow']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+          </style>
+        </nodeMappings>
+        <edgeMappings name="diagram_elements_edge_id" label="Diagram Elements Edge" deletionDescription="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='diagram_layer_id']/@toolSections.0/@ownedTools[name='delete_diagram_connection_id']" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='diagram_layer_id']/@nodeMappings[name='diagram_node_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='rangeConnection_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='edge_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@containerMappings[name='port_container_id']" targetFinderExpression="feature:elements">
+          <style sizeComputationExpression="2" routingStyle="manhattan" endsCentering="Both">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_orange']"/>
+            <centerLabelStyleDescription labelSize="10" showIcon="false">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_orange']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <toolSections name="diagram_tools_section" label="Diagram Tools">
+          <ownedTools xsi:type="tool_1:NodeCreationDescription" documentation="Create a new Diagram" name="diagram_cration_tool" label="Create Diagram" nodeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='diagram_layer_id']/@nodeMappings[name='diagram_node_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:CreateInstance" typeName="architecture::Diagram" referenceName="diagrams">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="new Diagram"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:EdgeCreationDescription" name="diagram_edge_creation_tool" label="Add Element to Diagram" precondition="aql:preSource.elements->select(e | e = preTarget)->isEmpty()" edgeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='diagram_layer_id']/@edgeMappings[name='diagram_elements_edge_id']" extraTargetMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="elements" valueExpression="aql:source.elements->including(target)"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:DeleteElementDescription" name="delete_diagram_connection_id" label="Delete Connection">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool:Unset" featureName="elements" elementExpression="aql:elementView.targetNode.oclAsType(viewpoint::DSemanticDecorator).target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </additionalLayers>
+      <additionalLayers name="containers_layer_id" label="Containers" activeByDefault="true">
+        <edgeMappings name="containers_edge_id" label="Container Edge" deletionDescription="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@toolSections.0/@ownedTools[name='allowedNodes\_deletion_id']" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']" targetFinderExpression="feature:allowedChildren">
+          <style sizeComputationExpression="2" foldingStyle="SOURCE">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_orange']"/>
+            <centerLabelStyleDescription labelSize="10" showIcon="false">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_orange']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="container_container_id" label="Container" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.0/@ownedTools[name='direct_edit_label']" semanticCandidatesExpression="aql:self.modelelements->filter(architecture::Container)" domainClass="architecture::Container" reusedBorderedNodeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_incoming_connection_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_outgoing_connection_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container']" childrenPresentation="List">
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelSize="10" showIcon="false" labelExpression="aql:self. name + ' : Container'" tooltipExpression="Node" widthComputationExpression="18" heightComputationExpression="15">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_orange']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_orange']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_orange']"/>
+          </style>
+        </containerMappings>
+        <toolSections name="containers_section_id" label="Containers">
+          <ownedTools xsi:type="tool_1:DeleteElementDescription" name="allowedNodes\_deletion_id" label="Delete Allowed Nodes">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool:Unset" featureName="allowedChildren" elementExpression="aql:elementView.targetNode.oclAsType(viewpoint::DSemanticDecorator).target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:EdgeCreationDescription" name="container_edge_creation_id" label="Add element to Container" precondition="aql:preSource.allowedChildren->select(e | e = preTarget)->isEmpty()" edgeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@edgeMappings[name='containers_edge_id']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="allowedChildren" valueExpression="aql:self. allowedChildren->including(target)"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="creation_section" label="Create">
+          <ownedTools xsi:type="tool_1:ContainerCreationDescription" documentation="Create a new Container" name="container_container_creation_id" label="Container" containerMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:CreateInstance" typeName="architecture::Container" referenceName="modelelements">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="aql:'Container '+container.modelelements->filter(architecture::Container)->size()"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <customization>
+          <vsmElementCustomizations xsi:type="description:VSMElementCustomization" predicateExpression="aql:self.oclAsType(architecture::Container).invertAllowedChildren">
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@edgeMappings[name='containers_edge_id']/@style" attributeName="lineStyle" value="dash"/>
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@edgeMappings[name='containers_edge_id']/@style/@centerLabelStyleDescription" attributeName="labelExpression" value="«except»"/>
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@edgeMappings[name='containers_edge_id']/@style/@centerLabelStyleDescription" attributeName="labelFormat" value="italic"/>
+          </vsmElementCustomizations>
+        </customization>
+      </additionalLayers>
+      <additionalLayers name="connector_layer" label="Connectors" activeByDefault="true">
+        <edgeMappings name="connection_allowed_targets_from_outgoing_id" label="Allowed Targets from Outgoing" deletionDescription="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='connector_layer']/@toolSections.0/@ownedTools[name='allowedTarget_deletion_id']" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_outgoing_connection_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@containerMappings[name='port_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']" targetFinderExpression="feature:allowedTargets">
+          <style endsCentering="Source">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+            <centerLabelStyleDescription labelSize="10" showIcon="false">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="connection_allowed_targets_from_incoming_id" label="Allowed Targets from Incoming" deletionDescription="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='connector_layer']/@toolSections.0/@ownedTools[name='allowedTarget_deletion_id']" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_incoming_connection_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@containerMappings[name='port_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id']" targetFinderExpression="feature:allowedTargets">
+          <style sourceArrow="InputArrow" targetArrow="NoDecoration" endsCentering="Source">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+            <centerLabelStyleDescription labelSize="10" showIcon="false">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="connector_edge_id" label="Connector" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_incoming_connection_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_outgoing_connection_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='edge_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='rangeConnection_container_id']" targetFinderExpression="feature:connector">
+          <style lineStyle="dash" sizeComputationExpression="aql:self.connector.width">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+            <centerLabelStyleDescription labelSize="12">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <toolSections name="connector_section_id" label="Connections">
+          <ownedTools xsi:type="tool_1:DeleteElementDescription" name="allowedTarget_deletion_id" label="Delete Allowed Target">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool:Unset" featureName="allowedTargets" elementExpression="aql:elementView.targetNode.oclAsType(viewpoint::DSemanticDecorator).target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:EdgeCreationDescription" name="allowed_target_create_id" label="Add allowed Target" precondition="aql:preSource.allowedTargets->select(e | e = preTarget)->isEmpty()" edgeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='connector_layer']/@edgeMappings[name='connection_allowed_targets_from_outgoing_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='connector_layer']/@edgeMappings[name='connection_allowed_targets_from_incoming_id']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="allowedTargets" valueExpression="aql:source.allowedTargets->including(target)"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:DirectEditLabel" name="direct_edit_label_connection_out_id" label="Edit Connection Name Outgoing">
+            <mask mask="out\n[{0}..{1}]"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="min" valueExpression="var:0"/>
+                <subModelOperations xsi:type="tool:If" conditionExpression="aql:1 &lt;> '*'">
+                  <subModelOperations xsi:type="tool:SetValue" featureName="max" valueExpression="var:1"/>
+                </subModelOperations>
+                <subModelOperations xsi:type="tool:If" conditionExpression="aql:1='*'">
+                  <subModelOperations xsi:type="tool:SetValue" featureName="max" valueExpression="aql:-1"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:EdgeCreationDescription" name="connector_create_id" label="Add Referenced Connector" edgeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='connector_layer']/@edgeMappings[name='connector_edge_id']" connectionStartPrecondition="aql:preSource.connector->isEmpty()">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="connector" valueExpression="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:DirectEditLabel" name="direct_edit_label_connection_in_id" label="Edit Connection Name Incoming">
+            <mask mask="in\n[{0}..{1}]"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="min" valueExpression="var:0"/>
+                <subModelOperations xsi:type="tool:If" conditionExpression="aql:1 &lt;> '*'">
+                  <subModelOperations xsi:type="tool:SetValue" featureName="max" valueExpression="var:1"/>
+                </subModelOperations>
+                <subModelOperations xsi:type="tool:If" conditionExpression="aql:1='*'">
+                  <subModelOperations xsi:type="tool:SetValue" featureName="max" valueExpression="aql:-1"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </additionalLayers>
+      <additionalLayers name="import_layer_id" label="Import">
+        <nodeMappings name="metamodel_node_id" label="Metamodel" semanticCandidatesExpression="feature:imports" domainClass="architecture::Metamodel">
+          <style xsi:type="style:LozengeNodeDescription" labelSize="12" showIcon="false" labelExpression="aql:self.uri.substring(self.uri.lastIndex('/')+1)" sizeComputationExpression="10" labelPosition="node" resizeKind="NSEW">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_purple']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='purple']"/>
+          </style>
+        </nodeMappings>
+        <toolSections name="import_section_id" label="Imports">
+          <ownedTools xsi:type="tool_1:NodeCreationDescription" documentation="Create a new Metamodel import" name="create_metamodel_id" label="Metamodel" nodeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='import_layer_id']/@nodeMappings[name='metamodel_node_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:CreateInstance" typeName="architecture::Metamodel" referenceName="imports"/>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <customization>
+          <vsmElementCustomizations xsi:type="description:VSMElementCustomization" predicateExpression="aql:self.oclAsType(architecture::Metamodel).uri.lastIndex('/')=-1">
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='import_layer_id']/@nodeMappings[name='metamodel_node_id']/@style" attributeName="labelExpression" value="Invalid URI"/>
+            <featureCustomizations xsi:type="description:EReferenceCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='import_layer_id']/@nodeMappings[name='metamodel_node_id']/@style" referenceName="color">
+              <value href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+            </featureCustomizations>
+          </vsmElementCustomizations>
+        </customization>
+      </additionalLayers>
+      <additionalLayers name="ports_layer_id" label="Ports">
+        <edgeMappings name="allowed_ports_id" label="Allowed Ports" deletionDescription="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@toolSections.0/@ownedTools[name='delete_port_connection_id']" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@containerMappings[name='port_container_id']" targetFinderExpression="feature:allowedPorts">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_red']"/>
+            <centerLabelStyleDescription labelSize="10" showIcon="false">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_red']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="port_container_id" label="Port" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.0/@ownedTools[name='direct_edit_label']" semanticCandidatesExpression="aql:self.modelelements->filter(architecture::Port)" domainClass="architecture::Port" reusedBorderedNodeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_incoming_connection_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@borderedNodeMappings[name='bordered_outgoing_connection_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container']" childrenPresentation="List">
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelSize="10" showIcon="false" labelExpression="aql:self. name + ' : Port'" tooltipExpression="Node" widthComputationExpression="18" heightComputationExpression="15">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_red']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_red']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_red']"/>
+          </style>
+        </containerMappings>
+        <toolSections name="port_section_id" label="Ports">
+          <ownedTools xsi:type="tool_1:DeleteElementDescription" name="delete_port_connection_id" label="Delete Connection">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool:Unset" featureName="allowedPorts" elementExpression="aql:elementView.targetNode.oclAsType(viewpoint::DSemanticDecorator).target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="creation_section" label="Create">
+          <ownedTools xsi:type="tool_1:ContainerCreationDescription" documentation="Create a new Container" name="port_container_creation_id" label="Port" containerMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@containerMappings[name='port_container_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:CreateInstance" typeName="architecture::Port" referenceName="modelelements">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="aql:'Port '+container.modelelements->filter(architecture::Port)->size()"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <customization>
+          <vsmElementCustomizations xsi:type="description:VSMElementCustomization" predicateExpression="aql:self.oclAsType(architecture::ItemWithPort).invertAllowedPorts">
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@edgeMappings[name='allowed_ports_id']/@style" attributeName="lineStyle" value="dash"/>
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@edgeMappings[name='allowed_ports_id']/@style/@centerLabelStyleDescription" attributeName="labelExpression" value="«except»"/>
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@edgeMappings[name='allowed_ports_id']/@style/@centerLabelStyleDescription" attributeName="labelFormat" value="italic"/>
+          </vsmElementCustomizations>
+        </customization>
+      </additionalLayers>
+      <additionalLayers name="add_on_layer_id" label="Add Ons">
+        <edgeMappings name="addon_items_edge_id" label="AddOn AllowedOnItems Edge" deletionDescription="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@toolSections.1/@ownedTools[name='delete_add_on_connection_id']" sourceMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@containerMappings[name='add_on_container_id']" targetMapping="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='containers_layer_id']/@containerMappings[name='container_container_id'] //@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='ports_layer_id']/@containerMappings[name='port_container_id']" targetFinderExpression="feature:allowedOnItems">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription labelSize="10" showIcon="false">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="add_on_container_id" label="Add On" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.0/@ownedTools[name='direct_edit_label']" semanticCandidatesExpression="aql:self.modelelements->filter(architecture::AddOn)" domainClass="architecture::AddOn" childrenPresentation="List">
+          <subNodeMappings name="property_in_container" label="Property" labelDirectEdit="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@toolSections.0/@ownedTools[name='edit_property_name']" semanticCandidatesExpression="feature:properties" domainClass="architecture::Property">
+            <style xsi:type="style:NoteDescription" labelSize="10" showIcon="false" labelExpression="aql:self.name+' : '+self.type" labelAlignment="LEFT" tooltipExpression="property_name : type" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='yellow']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelSize="10" showIcon="false" labelExpression="aql:self. name + ' : Add-On'" tooltipExpression="Add-On">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+          </style>
+        </containerMappings>
+        <toolSections name="creation_section" label="Create">
+          <ownedTools xsi:type="tool_1:ContainerCreationDescription" documentation="Create a new Container" name="add_on_container_creation_id" label="Add-On" containerMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@containerMappings[name='add_on_container_id']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:CreateInstance" typeName="architecture::AddOn" referenceName="modelelements">
+                <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="aql:'Add-On '+container.modelelements->filter(architecture::AddOn)->size()"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="add_on_tools_section" label="Add-On Tools">
+          <ownedTools xsi:type="tool_1:EdgeCreationDescription" name="addon_items_creation_tool" label="Add allowed Add-On Item" precondition="aql:preSource.allowedOnItems->select(e | e = preTarget)->isEmpty()" edgeMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@edgeMappings[name='addon_items_edge_id']" extraTargetMappings="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@defaultLayer/@containerMappings[name='node_container_id']/@subNodeMappings[name='property_in_container']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:self">
+                <subModelOperations xsi:type="tool:SetValue" featureName="allowedOnItems" valueExpression="aql:source.allowedOnItems->including(target)"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:DeleteElementDescription" name="delete_add_on_connection_id" label="Delete Allowed Item Connection">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool:Unset" featureName="allowedOnItems" elementExpression="aql:elementView.targetNode.oclAsType(viewpoint::DSemanticDecorator).target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <customization>
+          <vsmElementCustomizations xsi:type="description:VSMElementCustomization" predicateExpression="aql:self.oclAsType(architecture::AddOn).invertAllowedItems">
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@edgeMappings[name='addon_items_edge_id']/@style" attributeName="lineStyle" value="dash"/>
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@edgeMappings[name='addon_items_edge_id']/@style/@centerLabelStyleDescription" attributeName="labelExpression" value="«except»"/>
+            <featureCustomizations xsi:type="description:EAttributeCustomization" appliedOn="//@ownedViewpoints[name='architecture_viewpoint']/@ownedRepresentations[name='architecture_diagram_id']/@additionalLayers[name='add_on_layer_id']/@edgeMappings[name='addon_items_edge_id']/@style/@centerLabelStyleDescription" attributeName="labelFormat" value="italic"/>
+          </vsmElementCustomizations>
+        </customization>
+      </additionalLayers>
+    </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="architecture.design.Services"/>
+  </ownedViewpoints>
+</description:Group>
